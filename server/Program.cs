@@ -9,9 +9,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(b =>
     {
-        builder.WithOrigins("http://localhost:3000") // Frontend URL
+        b.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -24,20 +24,19 @@ builder.Services.AddScoped<ICurrencyService, CurrencyService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error"); // Simplified error handler
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 
-app.UseRouting();
 app.UseCors();
+app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllers(); // Changed from MapControllerRoute, focuses on API controllers
+app.MapControllers();
 
 app.Run();
